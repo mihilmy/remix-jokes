@@ -19,16 +19,6 @@ const storage = createCookieSessionStorage({
   }
 });
 
-export async function login({ username, password }: LoginForm) {
-  const user = await db.user.findUnique({
-    where: { username }
-  });
-  if (!user) return null;
-  const isCorrectPassword = await bcrypt.compare(password, user.passwordHash);
-  if (!isCorrectPassword) return null;
-  return user;
-}
-
 export async function createUserSession(userId: string, redirectTo: string) {
   const session = await storage.getSession();
   session.set("userId", userId);
@@ -70,10 +60,27 @@ export async function getUser(request: Request) {
   }
 }
 
+export async function login({ username, password }: LoginForm) {
+  const user = await db.user.findUnique({
+    where: { username }
+  });
+  if (!user) return null;
+  const isCorrectPassword = await bcrypt.compare(password, user.passwordHash);
+  if (!isCorrectPassword) return null;
+  return user;
+}
+
 export async function logout(request: Request) {
   const session = await storage.getSession(request.headers.get("Cookie"));
   return redirect("/login", {
     headers: { "Set-Cookie": await storage.destroySession(session) }
+  });
+}
+
+export async function register({ username, password }: LoginForm) {
+  const passwordHash = await bcrypt.hash(password, 10);
+  return db.user.create({
+    data: { username, passwordHash }
   });
 }
 
