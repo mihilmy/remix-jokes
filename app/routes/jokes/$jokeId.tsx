@@ -1,6 +1,5 @@
 import type { Joke } from "@prisma/client";
-import { Link } from "react-router-dom";
-import { LoaderFunction, useLoaderData } from "remix";
+import { LoaderFunction, useLoaderData, Link } from "remix";
 import { db } from "~/utils/db.server";
 
 type LoaderData = { joke: Joke };
