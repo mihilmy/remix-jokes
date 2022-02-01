@@ -1,0 +1,9 @@
+# Local files
+.cache
+
+# Builds
+build
+node_modules
+
+# Local database
+prisma/dev.db
