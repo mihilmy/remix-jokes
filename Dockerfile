@@ -17,4 +17,4 @@ RUN node --require esbuild-register prisma/seed.ts
 EXPOSE 3000
 
 # Start the application
-CMD [ "npm", "start" ]
+CMD [ "./scripts/start.sh"]
